@@ -10,6 +10,16 @@ For every design value, search the active project system first.
 4. Apply the same lookup-first discipline to typography, spacing, radii, shadows, icons, and assets.
 5. If no suitable item exists, describe the gap and wait for the user's explicit approval. Do not create a replacement automatically.
 
+### Theme-Only Color Boundary
+
+Every UI color must be read through the project's active theme API: `Theme.of(context).colorScheme`, a verified `ThemeExtension`, or the project's established theme accessor. Do not read a static palette such as `AppColors` directly from a screen or widget, even when its value is an existing design-system color.
+
+Never use `Color(...)`, `Colors.*`, hexadecimal literals, `withOpacity`, `withValues`, or a local alpha transformation in UI code. A required color, opacity, border, or shadow must already exist as a semantic theme value. If it does not, report the missing semantic theme value and wait for explicit approval before adding it to the theme; do not work around the gap locally.
+
+Static palette classes are implementation details of the theme layer only. Existing UI code outside that boundary is not a precedent for new code.
+
+Choose semantic roles rather than visual values: for example `surface`, `onSurface`, `primary`, `outline`, `error`, or a verified semantic `ThemeExtension` property. Before handoff, verify the implemented screen in both the active light and dark themes. A color that is correct only in one mode is incomplete.
+
 ## Widgets
 
 Before introducing a widget, search for one with the same responsibility and structure.
