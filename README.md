@@ -4,21 +4,9 @@ Converts a Figma screen to Flutter while respecting the active project's existin
 
 The workflow is deliberately progressive: it verifies the checkout, inventories the live project and Figma, proves reuse before creating anything, implements only approved scope, then verifies the result.
 
-## Install in Codex
+## Install
 
-Copy `codex/` to:
-
-```text
-~/.codex/skills/figma-flutter-implementation/
-```
-
-## Install in Claude Code
-
-Copy `claude-code/` to:
-
-```text
-~/.claude/skills/figma-flutter-implementation/
-```
+Run `./install.sh codex`, `./install.sh claude`, or `./install.sh both` from the cloned repository.
 
 Start a fresh Claude Code session, then invoke:
 
