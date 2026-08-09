@@ -34,6 +34,17 @@ git clone https://github.com/Sragsakr/figma-flutter-implementation-skill.git && 
 
 Replace `both` with `codex` or `claude` to install one version only. The installer never overwrites an existing skill.
 
+## Global availability
+
+This is a personal, global installation: the installer copies the skill to the tool's user-level skills directory, so it is available in every project on this machine.
+
+| Tool | Global location |
+| --- | --- |
+| Codex | `~/.codex/skills/figma-flutter-implementation/` |
+| Claude Code | `~/.claude/skills/figma-flutter-implementation/` |
+
+Install it once per machine. A fresh Claude Code session is needed after installation; open a new Codex task if the skill is not yet visible.
+
 ## Use
 
 Start a fresh Claude Code session and invoke:
@@ -85,6 +96,17 @@ git clone https://github.com/Sragsakr/figma-flutter-implementation-skill.git && 
 ```
 
 بدّل `both` إلى `codex` أو `claude` لو تريد نسخة واحدة فقط. الـInstaller لا يستبدل نسخة موجودة بالفعل.
+
+## التثبيت العام لكل المشاريع
+
+هذا التثبيت Personal وGlobal بالفعل: الـInstaller ينسخ الـSkill داخل مجلد الـSkills الخاص بالمستخدم، لذلك تكون متاحة تلقائيًا في كل مشروع على نفس الجهاز.
+
+| الأداة | المسار العام |
+| --- | --- |
+| Codex | `~/.codex/skills/figma-flutter-implementation/` |
+| Claude Code | `~/.claude/skills/figma-flutter-implementation/` |
+
+تثبّتها مرة واحدة لكل جهاز. بعد التثبيت ابدأ Session جديدة في Claude Code؛ وفي Codex افتح Task جديدة إذا لم تظهر الـSkill فورًا.
 
 ## طريقة الاستخدام
 
