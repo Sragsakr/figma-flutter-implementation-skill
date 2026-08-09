@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Flutter Implementation"
+  short_description: "Convert Figma designs using app conventions"
+  default_prompt: "Use $figma-flutter-implementation to turn this Figma link into a Flutter implementation."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Flutter Implementation"
+  short_description: "Build Flutter UI from Figma safely"
+  default_prompt: "Use $figma-flutter-implementation with this Figma URL to implement the target Flutter screen."
