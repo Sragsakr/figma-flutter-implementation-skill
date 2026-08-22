@@ -1,0 +1,14 @@
+{
+  "permissionMode": "full_access",
+  "permissions": {
+    "allow": [
+      "shell_execute::find . -type f -not -path './.git/*' | sort && printf '\\n--- directories ---\\n' && find . -type d -not -path './.git*' | sort",
+      "shell_execute::diff -ru --exclude='openai.yaml' codex claude-code || true; echo '===== metadata diff ====='; diff -u codex/agents/openai.yaml claude-code/agents/openai.yaml || true",
+      "shell_execute::git log --reverse --stat --oneline && printf '\\n===== initial skill commit summary/diff =====\\n' && git show --stat --oneline 8462272 && git show --format=fuller --no-ext-diff 8462272 -- codex claude-code | sed -n '1,1000p'",
+      "shell_execute::git show --format=fuller --no-ext-diff 1903319 -- codex claude-code; git show --format=fuller --no-ext-diff 137d82b -- install.sh; git show --format=fuller --no-ext-diff 4504cd3 -- README.md install.sh",
+      "shell_execute::git status --short && printf '\\n--- files ---\\n' && find . -maxdepth 3 -type f | sort | sed -n '1,220p'",
+      "shell_execute::rg -l --hidden --glob '!Library/**' --glob '!**/.git/**' '629fa587-8eae-4b6f-bf69-95006246e43d' /Users/srag/.sanad /Users/srag/.codex /Users/srag/.config 2>/dev/null | head -20",
+      "shell_execute::git log --oneline --decorate --all -20 && printf '\\n--- branches ---\\n' && git branch -avv && printf '\\n--- status ---\\n' && git status --short --branch"
+    ]
+  }
+}

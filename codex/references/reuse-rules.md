@@ -6,42 +6,47 @@ For every design value, search the active project system first.
 
 1. Reuse an appropriate existing semantic token exactly.
 2. Never use direct color literals in screens or widgets.
-3. Never duplicate an equivalent token or alter an existing token's value or semantic meaning for one screen.
-4. Apply the same lookup-first discipline to typography, spacing, radii, shadows, icons, and assets.
-5. If no suitable item exists, describe the gap and wait for the user's explicit approval. Do not create a replacement automatically.
+3. Never duplicate an equivalent token or alter an existing token's meaning for one screen.
+4. Apply the same lookup-first discipline to typography, spacing, radii, shadows, icons, responsive helpers, and assets.
+5. If no suitable item exists, list the precise gap and proposed addition in the Implementation Contract.
 
 ### Theme-Only Color Boundary
 
-Every UI color must be read through the project's active theme API: `Theme.of(context).colorScheme`, a verified `ThemeExtension`, or the project's established theme accessor. Do not read a static palette such as `AppColors` directly from a screen or widget, even when its value is an existing design-system color.
+Every UI color must be read through the project's active theme API: `Theme.of(context).colorScheme`, a verified `ThemeExtension`, or the established theme accessor. Do not read a static palette directly from feature UI.
 
-Never use `Color(...)`, `Colors.*`, hexadecimal literals, `withOpacity`, `withValues`, or a local alpha transformation in UI code. A required color, opacity, border, or shadow must already exist as a semantic theme value. If it does not, report the missing semantic theme value and wait for explicit approval before adding it to the theme; do not work around the gap locally.
+Do not introduce `Color(...)`, `Colors.*`, hexadecimal literals, or ad hoc local alpha transformations in UI code. Use an existing semantic state-layer/opacity helper when the project has one. Otherwise list the missing semantic value in the contract rather than working around it locally.
 
-Static palette classes are implementation details of the theme layer only. Existing UI code outside that boundary is not a precedent for new code.
+Choose semantic roles rather than visual values. Verify affected UI in every active theme relevant to the scope. A color correct only in one supported mode is incomplete.
 
-Choose semantic roles rather than visual values: for example `surface`, `onSurface`, `primary`, `outline`, `error`, or a verified semantic `ThemeExtension` property. Before handoff, verify the implemented screen in both the active light and dark themes. A color that is correct only in one mode is incomplete.
+## Components
 
-## Widgets
-
-Before introducing a widget, search for one with the same responsibility and structure.
+Before introducing a widget, search for the same responsibility, structure, and visual role.
 
 - Reuse an exact match.
-- Extend an existing widget using parameters, callbacks, or content slots when only content, state, or actions differ.
-- Use composition or a stable base/abstract contract only for genuinely shared structure and responsibility.
-- Create a new widget only when it is directly required by the user-authorized screen and cannot be represented by an existing API.
-- Keep screen-only widgets in that screen's `widgets/` folder. Move cross-screen widgets only with explicit authorization.
+- Extend an existing API when only content, state, actions, or slots differ and existing consumers can remain stable.
+- Use composition or a base contract only for genuinely shared structure and responsibility.
+- Create a screen-local widget only when the approved screen requires it and an existing API cannot represent it.
+- Move an item into shared scope only when current cross-screen reuse justifies it and the contract approves the move.
 
-For dialogs, favor an existing configurable app-dialog shell over duplicate error, success, or task-specific shells.
+Favor an existing configurable shell for dialogs, app bars, navigation, errors, loading, and empty states. Never create a screen-specific parallel merely because Figma places an established component in a new context.
 
-Never change existing widget behavior as a side effect of one screen.
+### Reuse Proof
 
-### Reuse Proof Gate
+For each `ADD`, identify the closest candidate and its concrete limitation. For each `EXTEND`, identify current consumers and preserve their behavior unless the contract explicitly changes them. A plausible future reuse is not enough reason for a new abstraction.
 
-Before creating any widget, search the active project for the same responsibility, structure, and visual role. Identify the closest existing candidate and its real consumers. A different label, padding, placement, callback, or parent screen is not enough reason to duplicate it.
+## No Unmapped UI
 
-This applies to every widget type, including top bars, app bars, headers, status indicators, navigation, inputs, tabs, cards, buttons, dialogs, lists, empty states, loading states, and feature controls. Reuse the existing widget and its established state source whenever it serves the same responsibility; never create a screen-specific parallel version merely because Figma places it on another screen.
+Every final UI element must map to one of:
 
-Create a replacement only when the existing candidate cannot meet the required responsibility through its current API. Before doing so, report the candidate, its concrete limitation, and the user's explicit authorization.
+- A scoped Figma item.
+- An established project shell, design-system, accessibility, or responsive convention.
+- A platform requirement such as safe-area handling.
+- An explicitly approved contract item.
 
-## Unapproved Additions
+Do not invent useful-looking icons, dividers, cards, actions, labels, empty states, gradients, shadows, or animations. Record project-preserved elements that intentionally differ from the literal frame.
 
-Never add a token, color, type style, spacing/shadow/radius definition, theme file, route, feature boundary, shared widget, shell component, dependency, asset, or abstraction unless the user explicitly requested that exact addition. Report the missing capability and stop for approval.
+## Approved Additions And Plan Deltas
+
+The user's approval of the complete Implementation Contract authorizes its listed tokens, files, routes, local/shared components, dependencies, assets, and abstractions. Do not request repeated approval for those exact actions.
+
+Never add or remove an unlisted capability. If implementation proves an additional change necessary, publish a focused Plan Delta with evidence, affected consumers, files, and risk. Continue only after that delta is approved.

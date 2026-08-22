@@ -1,41 +1,55 @@
 # Discovery And Baseline
 
-## Baseline
+## Baseline And Operation Mode
 
 1. Inspect the current checkout, branch, and working-tree status.
-2. Use that checkout by default. Do not create a branch or worktree unless the user explicitly asks.
-3. If the user identifies a branch, verify it before editing. If the intended source is unavailable, stop before proposing replacements.
+2. Use that checkout by default. Do not create a branch or worktree unless explicitly requested.
+3. If the user identifies a branch, verify it before editing.
+4. Identify the exact requested Figma scope: complete flow, complete screen, component, variant, or visual state.
+5. Search the project before choosing the operation:
+   - `CREATE`: no matching implementation exists after evidence-based search.
+   - `SYNC`: an implementation exists and the Figma target has changed.
+   - `REFINE`: the request is a bounded visual or component adjustment.
+   - `ANALYZE`: the user requested no implementation.
+
+Do not choose `CREATE` from a missing expected filename. Search routes, symbols, visible strings, feature entry points, similar components, and real consumers. If the intended checkout, target, or scope completeness cannot be verified, stop and ask one concise question.
 
 ## Figma Evidence
 
-Use the mandatory Figma design-to-code workflow before requesting design context. Inspect the target frame hierarchy, auto-layout, variants, styles, variables, assets, responsive states, annotations, and Code Connect hints.
+Use the mandatory Figma design-to-code workflow before requesting design context. Inspect the target hierarchy, auto-layout, constraints, variants, variables, styles, assets, responsive states, annotations, prototype relationships, and Code Connect hints.
 
-Treat returned React/Tailwind code as a reference only. Adapt it to the target Flutter project; never paste it as implementation.
+Classify each inspected item as a flow, screen, component, variant, or state. Record whether the supplied target is complete enough to support absence/removal decisions. A selected component, cropped screenshot, inaccessible node, or single variant is not evidence for deleting the rest of a screen.
+
+Treat returned React/Tailwind code as reference only. Adapt the evidence to Flutter and the active project; never paste generated reference code as implementation.
 
 ## Project Evidence
 
 Search definitions and real usages for:
 
-- Theme extensions, colors, typography, spacing, radii, shadows, assets, and localization.
-- Existing reusable widgets and visually/functionally similar screens.
-- Feature structure, main shell, routing, state management, and business-flow Cubits/use cases.
+- Theme extensions, semantic colors, typography, spacing, radii, shadows, assets, localization, responsive helpers, and accessibility conventions.
+- Existing reusable widgets and visually or functionally similar screens.
+- Feature structure, shell, routing, state management, models, business Cubits/controllers/use cases, and navigation entry points.
+- Tests, previews, golden tooling, runtime launch commands, and nearest comparable feature coverage.
 
-Do not conclude that a system is absent because one directory is empty or a guessed filename is missing. Identify the active definition and at least one real consumer where relevant.
+Identify an active definition and at least one real consumer where relevant. Do not conclude that a system or component is absent from a sparse directory or guessed filename.
+
+For `SYNC` and `REFINE`, also locate the current page, local sections, shared sources, registrations, assets, state, tests, and all consumers of anything that may change or be removed. Capture a rendered baseline at the target state and viewport when tooling permits; report honestly when it does not.
 
 ## Required Inventory
 
-Before editing, report:
+Before the contract, report:
 
-1. Verified checkout and branch.
-2. Existing tokens and styles that map to the Figma target.
-3. Existing components/assets/screens to reuse.
-4. Existing shell, routing, and state-management pattern.
-5. Every confirmed gap, marked as blocked pending explicit approval.
+1. Verified checkout, branch, mode, and scope completeness.
+2. Existing tokens and styles mapped to the target.
+3. Existing components, assets, screens, and patterns to reuse or extend.
+4. Existing shell, routing, localization, state-management, data, and business-flow patterns.
+5. Current implementation baseline for `SYNC`/`REFINE`.
+6. Every confirmed gap and every material ambiguity.
 
-### Widget Reuse Inventory
+### Component Reuse Inventory
 
-Before implementation, map every distinct Figma component to `reuse`, `extend`, or `blocked gap`. For each, record the closest existing widget or pattern and at least one real consumer. Include headers, navigation, input fields, tabs, cards, dialogs, states, icons, and repeated rows.
+Map each meaningful Figma component or section to `REUSE`, `EXTEND`, `ADD`, `BLOCKED`, or `UNCERTAIN`. Record the closest project candidate and a real consumer. Cover headers, navigation, inputs, tabs, cards, dialogs, states, icons, repeated rows, and major sections.
 
-Do not create a widget until its inventory entry is complete. A different parent screen, text, spacing, or position does not change a `reuse` decision. A `blocked gap` needs the user's explicit authorization before code or assets are added.
+A different parent, label, spacing, callback, or placement is not enough reason to duplicate a component. Do not create or replace a widget until the inventory explains why reuse or extension is insufficient.
 
-Only proceed when the implementation can use existing items or the user has explicitly approved each gap.
+Discovery authorizes no edits. Proceed only to the Implementation Contract Gate.

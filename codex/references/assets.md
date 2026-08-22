@@ -1,46 +1,44 @@
 # Asset Policy
 
-## Asset Discovery Gate
+## Discovery Gate
 
-Before exporting or downloading anything from Figma:
+Before exporting, adding, replacing, or removing an asset:
 
-1. Search the project's asset folders, generated asset accessors, `pubspec.yaml`, and real asset usages.
-2. Reuse an existing asset only when it is visually and semantically the correct match.
-3. Do not replace an existing logo, icon, illustration, or image merely because Figma supplied another copy.
-4. Report a missing required asset and wait for the user's explicit approval before adding it. An asset is an addition even when it originated in Figma.
+1. Search asset directories, generated accessors, manifests, and real usages.
+2. Reuse an asset only when it is the correct visual and semantic match.
+3. Do not replace an established logo, icon, illustration, or image merely because Figma contains another copy.
+4. List every new or replacement asset in the Implementation Contract with its Figma source and consumers.
 
 ## Export Choice After Approval
 
-Use the original Figma export; never redraw an SVG, hand-author paths, or substitute a placeholder.
+Use the original Figma export; never redraw vectors, author SVG paths, or substitute a placeholder.
 
-| Asset type | Preferred format | Reason |
+| Asset type | Preferred format | Condition |
 | --- | --- | --- |
-| Simple icon, logo, line art, or scalable illustration | SVG | Keeps vector fidelity at all target sizes. |
-| Photograph, textured image, raster illustration, or effect-heavy background | PNG | Preserves the authored pixels and effects. |
-| Animated content | Existing project format only | Do not introduce a new animation package or format without approval. |
+| Simple icon, logo, line art, scalable illustration | SVG | Existing project tooling renders SVG |
+| Photograph, texture, raster illustration, effect-heavy background | PNG | Preserve authored pixels/effects |
+| Animated content | Existing format | New format/package requires contract approval |
 
-Before selecting SVG, verify the project already renders SVG with its existing tooling. Do not add an SVG dependency merely to use an SVG. If existing tooling cannot render it, report the choice and wait for approval; do not silently convert a vector into a new app convention.
+Do not add an SVG or animation dependency silently. If current tooling cannot render the authored format, report the tradeoff as a gap or Plan Delta.
 
-## Naming And Location
+## Naming, Registration, And Access
 
-Use the project's existing asset folder and naming convention. If the project has no convention and the user approves the addition, use lower_snake_case semantic names:
+Follow the existing folder and naming convention. If an approved project has none, use lower_snake_case semantic names by purpose, never Figma IDs, hashes, `final`, `new`, or screen-only vague names.
 
-- `assets/icons/order_group.svg`
-- `assets/images/orders_empty_state.png`
-- `assets/images/orders_header_background.png`
+Register each asset exactly once through the established manifest or asset-management mechanism. Regenerate an existing accessor through its normal command; never hand-edit generated code. UI must use the central accessor/wrapper, never a raw asset path.
 
-Never use Figma node IDs, hashes, export filenames, screen names alone, `final`, `new`, or duplicate semantic names. Name by purpose, not appearance.
+Constrain rendered dimensions explicitly when required by layout; do not rely unexpectedly on intrinsic export dimensions.
 
-Keep icons, images, and illustrations in their existing separate asset directories. Register the asset through the project's existing asset manifest or asset-management file only after approval. If the application exposes an `Assets`, `AppAssets`, or generated accessor, add/regenerate the asset through that established mechanism and consume the accessor in UI code.
+## Replacement And Removal
 
-Never write a raw asset path such as `assets/icons/order_group.svg` inside a screen or widget. Never hand-edit generated asset code. Use the project's existing accessor or wrapper so asset locations remain centralized and can change safely.
+Distinguish:
 
-## Asset Verification
+1. Replace or remove an asset usage.
+2. Remove a manifest/accessor registration.
+3. Delete the source file.
 
-After an approved addition, verify:
+Before registration removal or file deletion, search all code, tests, generated accessors, manifests, and platform consumers. An asset no longer used by the target screen may still be shared. Report a newly unused asset as an orphan candidate; delete it only when the approved contract explicitly includes registration and file deletion.
 
-1. The file type matches the source and project support.
-2. The asset is registered exactly once.
-3. The generated accessor or existing app-asset wrapper resolves and is the only UI access path.
-4. The UI constrains its rendered size and does not use intrinsic dimensions unexpectedly.
-5. The final report identifies the source Figma item, semantic name, format, location, and consumer.
+## Verification
+
+Report the Figma source, semantic name, format, location, registration, accessor, and consumers for every added, replaced, or deleted asset. Verify type support, one registration, successful accessor resolution, and intended rendered size.

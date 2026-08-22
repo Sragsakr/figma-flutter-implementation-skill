@@ -1,0 +1,53 @@
+{
+  "skill_name": "figma-flutter-implementation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement the new Driver Profile flow from this complete Figma URL in the current Flutter project. Reuse the app shell, theme, routing, and state patterns already in the repository.",
+      "expected_output": "Classifies the work as CREATE, audits real project consumers, and presents an evidence-backed build tree, coverage/data/behavior/state matrices, architecture budget, and action table before editing.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The Order Details screen already exists, but I updated its full Figma frame: there is a new tracking section, the old call button is gone, and the summary layout changed. Sync the implementation.",
+      "expected_output": "Classifies the work as SYNC, establishes the current baseline, separates ADD/MODIFY/REMOVE USAGE decisions, preserves business logic without evidence for deletion, and requests approval for one change contract.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Update our existing checkout page from this Figma component selection. Anything not visible in the selection should be removed from the page.",
+      "expected_output": "Recognizes that a selected component is incomplete removal evidence, marks proposed out-of-selection removals UNCERTAIN, and asks for the complete target frame rather than deleting unrelated UI.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Figma removed the legacy banner from Profile. Delete whatever is no longer needed.",
+      "expected_output": "Searches consumers and distinguishes removing the Profile usage from deleting shared widget source, assets, state, tests, or business logic; destructive layers require explicit contract entries.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Build this new dashboard exactly from Figma. The cards look clickable, so add sensible navigation and mock any API fields that are missing.",
+      "expected_output": "Does not invent navigation, APIs, model fields, or production mock values from visual affordance; records missing behavior/data as blocked or uncertain in the CREATE contract.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Make the existing settings header match this updated Figma variant. Do not touch the rest of the page.",
+      "expected_output": "Classifies the request as REFINE, scopes work to the header and affected consumers, reuses or extends the existing component, and avoids whole-screen reconstruction.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Analyze this Figma flow against our Flutter app and show me exactly what would be built, but don't change any files.",
+      "expected_output": "Classifies the request as ANALYZE, produces the complete build/change contract, and stops without editing.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Implement this new account screen in our Riverpod Flutter project. The design has loading, empty, and content variants.",
+      "expected_output": "Follows the project's Riverpod precedent rather than imposing Cubit, maps all evidenced variants, and preserves the reuse-first CREATE workflow.",
+      "files": []
+    }
+  ]
+}
