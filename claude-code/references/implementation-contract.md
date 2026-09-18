@@ -5,15 +5,19 @@ The contract turns discovery into a reviewable execution boundary. Publish it be
 ## Required Header
 
 ```text
-Operation: CREATE | SYNC | REFINE | ANALYZE
+Declared operation: CREATE | SYNC | REFINE | ANALYZE | not supplied
+Verified operation: CREATE | SYNC | REFINE | ANALYZE
 Target: <screen, component, or flow>
 Figma scope: <full flow, full screen, component, or state>
 Current implementation: found | not found | uncertain
+Intent source: user intake | declared in request | derived from evidence
+Intent intake: answered | field derived from evidence | not required
+Mode evidence: <routes, symbols, consumers, and Figma scope>
 In scope: <items>
 Out of scope: <items>
 ```
 
-Do not classify a request as `CREATE` merely because an expected filename is absent. Search routes, symbols, visible text, components, and real consumers first.
+Do not classify a request as `CREATE` merely because an expected filename is absent. Search routes, symbols, visible text, components, and real consumers first. Publish this contract only after the intent intake is answered. A declared/verified conflict must be resolved before this contract is published for approval.
 
 ## Action Vocabulary
 

@@ -48,6 +48,30 @@
       "prompt": "Implement this new account screen in our Riverpod Flutter project. The design has loading, empty, and content variants.",
       "expected_output": "Follows the project's Riverpod precedent rather than imposing Cubit, maps all evidenced variants, and preserves the reuse-first CREATE workflow.",
       "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Use CREATE mode for this Figma screen. Scope: complete Order Details screen. Target: OrderDetailsPage. Show the contract before editing. The current project already contains OrderDetailsPage and the /orders/:id route.",
+      "expected_output": "Treats CREATE as declared intent but verifies it, reports a CREATE-versus-SYNC conflict with the existing page/route evidence, and asks for confirmation before publishing an approvable contract or editing.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Use SYNC mode for the complete Driver Earnings Figma screen. Current implementation: DriverEarningsPage. Show the contract before editing. No matching page, route, symbol, or consumer exists after complete project search.",
+      "expected_output": "Reports that declared SYNC conflicts with evidence supporting CREATE, recommends the evidence-based mode, and asks for confirmation rather than fabricating or silently overriding the target.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "/figma-flutter-implementation https://figma.com/design/abc123/Driver-App?node-id=12-345",
+      "expected_output": "Treats the skill name and Figma target as sufficient input and asks for the remaining intent in sequential steps, one question per step and waiting for each answer, covering operation, scope, target, current implementation, and exclusions. Inspects neither Figma nor the project, and edits nothing, before the intake is answered.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "The user answers the SYNC intake with operation=SYNC, scope=complete screen, target=DriverEarningsPage, and current implementation=unknown, then adds: our AGENTS.md says all screens live in lib/features/<feature>/.",
+      "expected_output": "Does not re-ask for the answered fields, derives only the unknown current implementation from project and Figma evidence, cites it as derived in the contract, and treats the AGENTS.md convention as supporting evidence rather than a substitute for the user's answer.",
+      "files": []
     }
   ]
 }

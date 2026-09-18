@@ -55,6 +55,32 @@ If you provide only the skill name and a Figma URL, the skill does not guess fro
 
 The detected mode and its evidence appear at the top of the Implementation Contract, so you can correct it before approving any code change.
 
+### Recommended: declare your intent and let the skill verify it
+
+When you know the target, declaring the mode and scope is faster and safer than relying on discovery alone:
+
+```text
+/figma-flutter-implementation <FIGMA_URL>
+
+Mode: CREATE | SYNC | REFINE | ANALYZE
+Scope: <complete flow | complete screen | component | variant/state>
+Target: <screen or widget name, if known>
+Current implementation: <class or path, if known>
+
+Show the Implementation Contract before editing.
+```
+
+You may omit unknown fields. The skill treats supplied values as high-confidence intent, then verifies them against Figma and the project. It must not follow a conflicting declaration blindly:
+
+```text
+Declared operation: CREATE
+Evidence-based operation: SYNC
+Conflict evidence: OrderDetailsPage and /orders/:id already exist
+Recommended next step: confirm whether to synchronize the existing screen
+```
+
+No contract or code edit proceeds until that conflict is resolved. This prevents duplicate screens while keeping you in control of the intended scope.
+
 ## What the Implementation Contract includes
 
 - Explicit scope and exclusions.
@@ -119,6 +145,20 @@ A short daily-use prompt is usually enough:
 
 Create or synchronize this design with the current Flutter project. Show me the Implementation Contract before editing, then execute only the approved actions.
 ```
+
+### Intent intake (runs before anything else)
+
+The skill name and the Figma target are enough to start. Before it inspects Figma or the project, the skill collects the remaining intent from you in sequential steps, one question per step, and waits for each answer:
+
+| Step | Question | Example answer |
+| --- | --- | --- |
+| 1 | Operation | `CREATE` |
+| 2 | Scope | `complete screen` |
+| 3 | Target | `DriverProfilePage` |
+| 4 | Current implementation, for `SYNC`/`REFINE` | `lib/features/driver/profile/driver_profile_page.dart` |
+| 5 | Exclusions or constraints | `no tablet layout, keep the current route` |
+
+Answer `unknown` for any step you cannot provide; only that field is then derived from Figma and project evidence and reported in the contract. Your answers are the authoritative intent, they override derivation, and the skill never asks again for a field you answered in the same run. Discovery and any edit start only after the intake is complete.
 
 ## Prompt examples
 
@@ -344,6 +384,32 @@ Figma الجديدة + مشروع Flutter الحالي
 5. لو ظهر أكثر من تنفيذ محتمل، أو Figma scope غير كاملة، أو الأدلة غير كافية، تسأل سؤالًا واحدًا مختصرًا بدل تعديل الكود بالتخمين.
 
 الوضع المكتشف والأدلة الخاصة به يظهران في أول Implementation Contract، وبالتالي تقدر تصححه قبل الموافقة على أي تعديل.
+
+### الأفضل: حدد نيتك وسيب الـSkill تتحقق منها
+
+لو أنت عارف الهدف، تحديد الـmode والنطاق يكون أسرع وأأمن من الاعتماد على الاكتشاف وحده:
+
+```text
+/figma-flutter-implementation <FIGMA_URL>
+
+Mode: CREATE | SYNC | REFINE | ANALYZE
+Scope: <Flow كاملة | Screen كاملة | Component | Variant/State>
+Target: <اسم الشاشة أو الـWidget لو معروف>
+Current implementation: <اسم الـclass أو المسار لو معروف>
+
+اعرض Implementation Contract قبل تعديل الكود.
+```
+
+تقدر تسيب أي معلومة غير معروفة. الـSkill تعتبر البيانات التي كتبتها intent قوية، ثم تتحقق منها داخل Figma والمشروع. لو تحديدك تعارض مع الأدلة، لا تنفذه بشكل أعمى:
+
+```text
+Declared operation: CREATE
+Evidence-based operation: SYNC
+Conflict evidence: OrderDetailsPage و/orders/:id موجودان بالفعل
+Recommended next step: تأكيد مزامنة الشاشة الموجودة
+```
+
+لا يتم عرض عقد نهائي للموافقة أو تعديل الكود قبل حل التعارض. ده يمنع إنشاء شاشات مكررة مع الحفاظ على تحكمك في النطاق المطلوب.
 
 ## محتويات Implementation Contract
 

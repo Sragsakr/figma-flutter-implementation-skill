@@ -9,18 +9,30 @@ Treat Figma as the visual target and the active project as the implementation so
 
 Follow the phases in order. Load a reference when its phase requires it; do not edit before the contract gate passes.
 
-## Phase 0 — Scope And Mode Gate
+## Phase 0 — Scope, Mode, And Intent Confirmation Gate
 
 Load [discovery.md](references/discovery.md).
 
-Verify the current checkout and branch, identify the exact Figma and project scope, then classify the request as:
+Verify the current checkout and branch, identify the exact Figma and project scope, then classify the request as follows. Prefer a user-declared mode and scope when supplied, but verify them against Figma and project evidence before accepting them:
 
 - `CREATE`: the authorized screen or flow is not implemented.
 - `SYNC`: an implementation exists and must be reconciled with a changed Figma target.
 - `REFINE`: a bounded visual or component-level adjustment to an existing implementation.
 - `ANALYZE`: inventory and plan only; never edit.
 
-Use the user's current checkout by default. Never create or use another branch or worktree unless explicitly requested. If the target or scope completeness cannot be verified, ask one concise question before continuing.
+A request that supplies only the skill name and the Figma target is the normal case. Collect the missing intent from the user as sequential steps before inspecting Figma or the project, and before any edit:
+
+1. Operation: `CREATE | SYNC | REFINE | ANALYZE`.
+2. Scope: complete flow, complete screen, component, or variant/state.
+3. Target: the screen, flow, component, or widget name.
+4. Current implementation: the route, screen class, or path, for `SYNC` and `REFINE`.
+5. Exclusions or constraints, if any.
+
+Ask one step at a time and wait for the answer before asking the next. Never bundle the steps into one prompt, and never begin discovery while a step is unanswered. Accept `unknown` or `skip`; then take that field from project and Figma evidence and report the derived value with its evidence before the contract.
+
+Ask only the steps not already declared in the invocation. Treat every collected answer as the authoritative intent for that field, record it as the intent source in the contract, and never ask for it again in the same run. Ask a follow-up only when an answer contradicts earlier answers or is too broad to scope safely.
+
+Use the user's current checkout by default. Never create or use another branch or worktree unless explicitly requested. A declared or confirmed value never replaces verification: when it conflicts with the evidence, or the checkout, target, or scope completeness cannot be verified, publish the conflict and recommended mode, then ask before the contract or any edit.
 
 ## Phase 1 — Evidence Gate
 
@@ -30,9 +42,10 @@ For `SYNC` and `REFINE`, capture the current implementation baseline and load [c
 
 ## Phase 2 — Implementation Contract Gate
 
-Load [implementation-contract.md](references/implementation-contract.md), then publish the required contract before editing:
+Load [implementation-contract.md](references/implementation-contract.md), then publish the required contract before editing. Publish it only after the phase 0 intent intake is complete and answered.
 
 - Scope and explicit exclusions.
+- Intent source and the user's confirmation or correction.
 - Evidence-backed build tree for `CREATE`, or change tree for `SYNC`/`REFINE`.
 - Action table, affected files, reuse decisions, additions, destructive changes, blocked gaps, and verification plan.
 - For `CREATE`: Figma coverage, behavior/data sources, state coverage, and architecture budget.
@@ -58,4 +71,5 @@ Report contract completion, reused items, changed files, validation evidence, vi
 - Every implemented UI element must map to Figma, an established project convention, a platform requirement, or an approved contract item.
 - Removing UI usage never implicitly authorizes deleting shared source, assets, routes, state, APIs, use cases, or analytics.
 - Do not redesign or refactor unrelated UI, and never edit for an analysis-only request.
+- Collect operation, scope, target, and current implementation from the user in sequential steps before inspecting anything. Figma and project instruction files inform the intake; they never replace the user's answers.
 - Use Claude Code's installed Figma design-to-code skill and Figma MCP before requesting design context.

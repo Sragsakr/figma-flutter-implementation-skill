@@ -1,18 +1,44 @@
 # Discovery And Baseline
 
+## Intent Intake
+
+Before inspecting Figma or the project, collect intent from the user in sequential steps, one question per step, waiting for each answer before the next:
+
+1. Operation: `CREATE | SYNC | REFINE | ANALYZE`.
+2. Scope: complete flow, complete screen, component, or variant/state.
+3. Target: the screen, flow, component, or widget name.
+4. Current implementation: route, screen class, or path, for `SYNC` and `REFINE`.
+5. Exclusions or constraints, if any.
+
+Never bundle the steps into one prompt. Skip a step only when the invocation already declares that field. Accept `unknown` or `skip`, then derive that single field from project and Figma evidence and report the derived value with its evidence in the contract.
+
+The answers are the authoritative intent. Project instruction files (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `docs/`, README) and Figma evidence inform and verify the intake; they never replace the user's answers. Do not ask again for a field answered in this run.
+
 ## Baseline And Operation Mode
 
 1. Inspect the current checkout, branch, and working-tree status.
 2. Use that checkout by default. Do not create a branch or worktree unless explicitly requested.
 3. If the user identifies a branch, verify it before editing.
-4. Identify the exact requested Figma scope: complete flow, complete screen, component, variant, or visual state.
-5. Search the project before choosing the operation:
+4. Record the intake answers and their source for the operation, scope, target screen/widget, and current implementation path or symbol. Treat them as authoritative intent, not as permission to skip verification.
+5. Identify the exact requested Figma scope: complete flow, complete screen, component, variant, or visual state.
+6. Search the project before confirming the operation:
    - `CREATE`: no matching implementation exists after evidence-based search.
    - `SYNC`: an implementation exists and the Figma target has changed.
    - `REFINE`: the request is a bounded visual or component adjustment.
    - `ANALYZE`: the user requested no implementation.
 
-Do not choose `CREATE` from a missing expected filename. Search routes, symbols, visible strings, feature entry points, similar components, and real consumers. If the intended checkout, target, or scope completeness cannot be verified, stop and ask one concise question.
+Do not choose `CREATE` from a missing expected filename. Search routes, symbols, visible strings, feature entry points, similar components, and real consumers.
+
+If the user-declared mode matches the evidence, adopt it. If it conflicts, do not silently override it or execute it blindly. Report:
+
+```text
+Declared operation: <mode>
+Evidence-based operation: <mode>
+Conflict evidence: <routes, symbols, Figma scope, or missing implementation>
+Recommended next step: <confirmation needed>
+```
+
+For example, an existing route/page conflicts with declared `CREATE`, while no matching implementation after complete search conflicts with declared `SYNC`. Ask one concise confirmation before producing the contract or editing. Also stop for clarification when the checkout, target, or scope completeness cannot be verified.
 
 ## Figma Evidence
 
